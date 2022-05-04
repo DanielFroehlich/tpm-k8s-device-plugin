@@ -15,20 +15,23 @@ spec:
     spec:
       containers:
       - name: fbdl-plugin
-        image: #image of deployed device plugin, example: fbdl.plugin.image:v1
-        imagePullPolicy: IfNotPresent
+        image: quay.io/dfroehli/tpm-k8s-device-plugin:latest
+        imagePullPolicy: Always
         securityContext:
           privileged: true
         volumeMounts:
-        - name: dev-tpmrm
-          mountPath: /dev/tpmrm0
-          readOnly: true
+#        - name: dev-tpmrm
+#          mountPath: /dev/tpmrm0
+#          readOnly: true
         - name: kubeletsockets
           mountPath: /var/lib/kubelet/device-plugins
+      serviceAccountName: tpmaccess
+      nodeSelector:
+        tpm2: present
       volumes:
-      - name: dev-tpmrm
-        hostPath:
-          path: /dev/tpmrm0
+#      - name: dev-tpmrm
+#        hostPath:
+#          path: /dev/tpmrm0
       - name: kubeletsockets
         hostPath:
           path: /var/lib/kubelet/device-plugins
